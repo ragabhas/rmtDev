@@ -1,24 +1,12 @@
-import { useEffect, useState } from "react";
+type SearchFormProps = {
+  searchText: string;
+  onSearchTextChange: (text: string) => void;
+};
 
-export default function SearchForm() {
-  const [searchText, setSearchText] = useState("");
-  const [jobItems, setJobItems] = useState([]);
-
-  useEffect(() => {
-    if (!searchText) {
-      return;
-    }
-
-    const fetchResults = async () => {
-      const response = await fetch(
-        `https://bytegrad.com/course-assets/projects/rmtdev/api/data?search=${searchText}`
-      );
-      const data = await response.json();
-      setJobItems(data.jobItems);
-    };
-
-    fetchResults();
-  }, [searchText]);
+export default function SearchForm({
+  searchText,
+  onSearchTextChange,
+}: SearchFormProps) {
   return (
     <form
       onSubmit={(e) => {
@@ -33,7 +21,7 @@ export default function SearchForm() {
 
       <input
         value={searchText}
-        onChange={(e) => setSearchText(e.target.value)}
+        onChange={(e) => onSearchTextChange(e.target.value)}
         spellCheck="false"
         type="text"
         required
